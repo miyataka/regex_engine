@@ -28,6 +28,13 @@ struct Generator {
 }
 
 impl Generator {
+    fn gen_code(&mut self, ast: &AST) -> Result<(), CodeGenError> {
+        self.gen_expr(ast)?;
+        self.inc_pc()?;
+        self.insts.push((Instruction::Match));
+        Ok(())
+    }
+
     fn gen_expr(&mut self, ast: &AST) -> Result<(), CodeGenError> {
         match ast {
             AST::Char(c) => self.gen_char(*c)?,
@@ -158,4 +165,10 @@ impl Generator {
 
         Ok(())
     }
+}
+
+pub fn gen_code(ast: &AST) -> Result<Vec<Instruction>, CodeGenError> {
+    let mut generator = Generator::default();
+    generator.gen_code(ast)?;
+    Ok(generator.insts)
 }
