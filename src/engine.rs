@@ -1,4 +1,5 @@
 mod codegen;
+mod evaluator;
 mod parser;
 
 use std::fmt::{self, Display};
